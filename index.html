@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Retro Minesweeper</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💣</text></svg>">
+
     <style>
         :root {
             --bg-color: #c0c0c0;
@@ -25,10 +28,9 @@
             box-sizing: border-box;
             
             /* --- SAFE AREA LOGIC --- */
-            /* calculates safe area PLUS an extra 35px buffer to clear the island completely */
+            /* Pushes top down past the dynamic island + 35px extra buffer */
             padding-top: calc(env(safe-area-inset-top) + 35px); 
-            
-            /* Bottom buffer for the swipe bar */
+            /* Bottom buffer for the home swipe bar */
             padding-bottom: max(20px, env(safe-area-inset-bottom));
         }
 
