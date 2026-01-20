@@ -9,33 +9,40 @@
             --bg-color: #c0c0c0;
             --shadow-light: #ffffff;
             --shadow-dark: #808080;
-            --shadow-black: #000000;
-            --cell-size: 32px; 
+            --cell-size: 30px; /* Calculated via JS */
         }
 
         body {
             background-color: #000000;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            justify-content: center; /* Center on large screens */
+            height: 100vh;
             margin: 0;
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
-            /* Prevents "Pull to Refresh" on mobile so swipe works for the game */
-            overscroll-behavior: none; 
-            overflow: hidden; 
+            overflow: hidden; /* Prevent scrolling */
+            touch-action: none; /* Disable native touch gestures */
+            overscroll-behavior: none;
         }
 
-        /* 3D Bevel Utilities */
+        #game-window {
+            width: 100%;
+            max-width: 430px; /* iPhone Max width cap */
+            height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            border-left: 2px solid var(--shadow-light);
+            border-right: 2px solid var(--shadow-dark);
+            box-sizing: border-box;
+            padding: 4px;
+        }
+
+        /* 3D Effects */
         .bevel-up {
-            border-top: 3px solid var(--shadow-light);
-            border-left: 3px solid var(--shadow-light);
-            border-right: 3px solid var(--shadow-dark);
-            border-bottom: 3px solid var(--shadow-dark);
+            border-top: 2px solid var(--shadow-light);
+            border-left: 2px solid var(--shadow-light);
+            border-right: 2px solid var(--shadow-dark);
+            border-bottom: 2px solid var(--shadow-dark);
             background-color: var(--bg-color);
         }
 
@@ -47,60 +54,82 @@
             background-color: var(--bg-color);
         }
 
-        #game-window {
-            padding: 6px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); 
-        }
-
-        /* Header */
+        /* HEADER */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px;
+            padding: 6px 4px;
             margin-bottom: 6px;
+            background-color: var(--bg-color);
+            flex-shrink: 0; /* Prevent header from shrinking */
         }
 
+        /* Digital Counters */
         .digital-display {
             background: black;
             color: red;
-            font-family: monospace;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
-            padding: 2px 4px;
+            padding: 2px;
+            width: 40px;
+            text-align: center;
             border-top: 2px solid var(--shadow-dark);
             border-left: 2px solid var(--shadow-dark);
             border-right: 2px solid var(--shadow-light);
             border-bottom: 2px solid var(--shadow-light);
-            width: 50px;
-            text-align: center;
         }
 
-        #reset-btn {
-            width: 40px;
-            height: 40px;
-            font-size: 24px;
+        /* Center Control Cluster */
+        .controls-cluster {
+            display: flex;
+            gap: 4px;
+        }
+
+        .btn {
+            width: 36px;
+            height: 36px;
+            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            user-select: none;
         }
-        
-        #reset-btn:active {
+
+        .btn:active {
             border-top: 2px solid var(--shadow-dark);
             border-left: 2px solid var(--shadow-dark);
             border-right: 2px solid var(--shadow-light);
             border-bottom: 2px solid var(--shadow-light);
         }
 
-        /* Grid */
-        #grid {
-            display: grid;
+        /* Active Mode Highlight */
+        .mode-active {
+            background-color: #ffff00;
+            border-top: 2px solid var(--shadow-dark);
+            border-left: 2px solid var(--shadow-dark);
+            border-right: 2px solid var(--shadow-light);
+            border-bottom: 2px solid var(--shadow-light);
+        }
+
+        /* GRID Container */
+        #grid-container {
+            flex-grow: 1; /* Fills remaining space */
+            display: flex;
+            align-items: center; /* Vertically center grid if slight gap */
+            justify-content: center;
+            position: relative;
+            background-color: #808080; /* Darker bg behind grid */
             border-top: 3px solid var(--shadow-dark);
             border-left: 3px solid var(--shadow-dark);
             border-right: 3px solid var(--shadow-light);
             border-bottom: 3px solid var(--shadow-light);
-            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        #grid {
+            display: grid;
         }
 
         .cell {
@@ -110,7 +139,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 20px;
+            font-size: 18px; /* Dynamic font size could be added, but 18 is safe */
             cursor: pointer;
             box-sizing: border-box;
         }
@@ -120,6 +149,7 @@
             border-left: 3px solid var(--shadow-light);
             border-right: 3px solid var(--shadow-dark);
             border-bottom: 3px solid var(--shadow-dark);
+            background-color: var(--bg-color);
         }
 
         .cell.revealed {
@@ -127,7 +157,7 @@
             background-color: #c0c0c0;
         }
 
-        /* Colors for numbers */
+        /* Colors & Icons */
         .c-1 { color: blue; }
         .c-2 { color: green; }
         .c-3 { color: red; }
@@ -136,67 +166,44 @@
         .c-6 { color: teal; }
         .c-7 { color: black; }
         .c-8 { color: gray; }
-
         .mine { background-color: red; }
         .flag { color: red; }
 
-        /* Mobile Controls */
-        #mobile-controls {
-            margin-top: 25px;
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            width: 100%;
-            max-width: 320px;
-        }
-
-        .control-btn {
-            flex: 1;
-            padding: 12px 0;
-            font-family: inherit;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            text-align: center;
-            background-color: #c0c0c0;
-            font-size: 16px;
-            transition: transform 0.1s;
-        }
-
-        .mode-active {
-            background-color: #ffff00;
-            border-top: 2px solid var(--shadow-dark);
-            border-left: 2px solid var(--shadow-dark);
-            border-right: 2px solid var(--shadow-light);
-            border-bottom: 2px solid var(--shadow-light);
-            transform: translateY(2px);
-        }
     </style>
 </head>
 <body>
 
-    <div id="game-window" class="bevel-up">
+    <div id="game-window">
         <header class="bevel-down">
-            <div id="mines-count" class="digital-display">015</div>
-            <div id="reset-btn" class="bevel-up">🙂</div>
+            <div id="mines-count" class="digital-display">000</div>
+            
+            <div class="controls-cluster">
+                <div id="btn-dig" class="btn bevel-up mode-active" onclick="setMode('dig')">⛏️</div>
+                <div id="reset-btn" class="btn bevel-up">🙂</div>
+                <div id="btn-flag" class="btn bevel-up" onclick="setMode('flag')">🚩</div>
+            </div>
+
             <div id="timer" class="digital-display">000</div>
         </header>
 
-        <div id="grid">
-            </div>
-    </div>
-
-    <div id="mobile-controls">
-        <div id="mode-dig" class="control-btn bevel-up mode-active" onclick="setMode('dig')">⛏️ Dig</div>
-        <div id="mode-flag" class="control-btn bevel-up" onclick="setMode('flag')">🚩 Flag</div>
+        <div id="grid-container">
+            <div id="grid">
+                </div>
+        </div>
     </div>
 
     <script>
-        // Game Configuration
-        const ROWS = 12;
-        const COLS = 10; 
-        const MINES_COUNT = 15;
-        
+        // DOM Elements
+        const gridEl = document.getElementById('grid');
+        const gridContainer = document.getElementById('grid-container');
+        const minesDisplay = document.getElementById('mines-count');
+        const timerDisplay = document.getElementById('timer');
+        const resetBtn = document.getElementById('reset-btn');
+        const btnDig = document.getElementById('btn-dig');
+        const btnFlag = document.getElementById('btn-flag');
+        const gameWindow = document.getElementById('game-window');
+
+        // State Variables
         let grid = [];
         let gameOver = false;
         let flags = 0;
@@ -205,18 +212,39 @@
         let firstClick = true;
         let inputMode = 'dig';
         
-        // Touch variables
+        let ROWS = 0;
+        let COLS = 10; // Standard mobile width
+        let MINES = 0;
+
+        // Touch handling
         let touchStartY = 0;
         let touchEndY = 0;
 
-        const gridEl = document.getElementById('grid');
-        const minesDisplay = document.getElementById('mines-count');
-        const timerDisplay = document.getElementById('timer');
-        const resetBtn = document.getElementById('reset-btn');
-        const btnDig = document.getElementById('mode-dig');
-        const btnFlag = document.getElementById('mode-flag');
+        // --- Logic ---
+
+        function calculateDimensions() {
+            // Get available dimensions inside the grid container
+            // We defer this slightly to ensure layout is computed
+            const width = gridContainer.clientWidth;
+            const height = gridContainer.clientHeight;
+            
+            // We fix COLS to 10 for a standard mobile experience
+            COLS = 10;
+            
+            // Calculate Cell Size to perfectly fill width
+            const cellSize = Math.floor(width / COLS);
+            document.documentElement.style.setProperty('--cell-size', `${cellSize}px`);
+
+            // Calculate how many ROWs fit in the height
+            ROWS = Math.floor(height / cellSize);
+
+            // Set Mine Density (approx 15%)
+            MINES = Math.floor(ROWS * COLS * 0.15);
+        }
 
         function initGame() {
+            calculateDimensions();
+            
             gridEl.style.gridTemplateColumns = `repeat(${COLS}, var(--cell-size))`;
             gridEl.innerHTML = '';
             grid = [];
@@ -230,6 +258,7 @@
             timerDisplay.textContent = '000';
             updateMineCount();
 
+            // Generate Cells
             for (let r = 0; r < ROWS; r++) {
                 const row = [];
                 for (let c = 0; c < COLS; c++) {
@@ -258,7 +287,7 @@
 
         function placeMines(safeR, safeC) {
             let minesPlaced = 0;
-            while (minesPlaced < MINES_COUNT) {
+            while (minesPlaced < MINES) {
                 const r = Math.floor(Math.random() * ROWS);
                 const c = Math.floor(Math.random() * COLS);
                 if (!grid[r][c].isMine && !(r === safeR && c === safeC)) {
@@ -315,6 +344,7 @@
             cell.revealed = true;
             cell.element.classList.remove('hidden');
             cell.element.classList.add('revealed');
+            
             if (cell.neighbors > 0) {
                 cell.element.textContent = cell.neighbors;
                 cell.element.classList.add(`c-${cell.neighbors}`);
@@ -370,7 +400,7 @@
                     if (cell.revealed) revealedCount++;
                 });
             });
-            if (revealedCount === (ROWS * COLS) - MINES_COUNT) {
+            if (revealedCount === (ROWS * COLS) - MINES) {
                 gameOver = true;
                 stopTimer();
                 resetBtn.textContent = '😎';
@@ -388,7 +418,7 @@
                     }
                 });
             });
-            flags = MINES_COUNT;
+            flags = MINES;
             updateMineCount();
         }
 
@@ -415,36 +445,9 @@
             }
         }
 
-        // --- Swipe Gesture Logic ---
-        document.addEventListener('touchstart', e => {
-            touchStartY = e.changedTouches[0].screenY;
-        }, {passive: false});
-
-        document.addEventListener('touchend', e => {
-            touchEndY = e.changedTouches[0].screenY;
-            handleGesture();
-        }, {passive: false});
-
-        function handleGesture() {
-            const distance = touchEndY - touchStartY;
-            // Threshold of 50px for a valid swipe
-            if (distance > 50) { 
-                toggleInputMode();
-            }
-        }
-
-        function toggleInputMode() {
-            if (inputMode === 'dig') {
-                setMode('flag');
-            } else {
-                setMode('dig');
-            }
-        }
-        // ---------------------------
-
         function updateMineCount() {
-            let count = MINES_COUNT - flags;
-            minesDisplay.textContent = count.toString().padStart(3, '0');
+            let count = MINES - flags;
+            minesDisplay.textContent = Math.max(0, count).toString().padStart(3, '0');
         }
 
         function startTimer() {
@@ -459,8 +462,33 @@
             clearInterval(timerInterval);
         }
 
+        // --- Swipe Logic ---
+        document.addEventListener('touchstart', e => {
+            touchStartY = e.changedTouches[0].screenY;
+        }, {passive: false});
+
+        document.addEventListener('touchend', e => {
+            touchEndY = e.changedTouches[0].screenY;
+            const distance = touchEndY - touchStartY;
+            if (distance > 50) { 
+                toggleInputMode();
+            }
+        }, {passive: false});
+
+        function toggleInputMode() {
+            setMode(inputMode === 'dig' ? 'flag' : 'dig');
+        }
+
+        // Initializer
         resetBtn.addEventListener('click', initGame);
-        initGame();
+        
+        // Wait for layout to settle before init
+        window.onload = initGame;
+        window.onresize = () => {
+             // Optional: simple reload on rotate/resize to recalculate grid
+             // setTimeout(initGame, 200); 
+        };
+
     </script>
 </body>
 </html>
