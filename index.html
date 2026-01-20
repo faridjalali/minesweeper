@@ -474,8 +474,13 @@
         document.addEventListener('touchend', e => {
             touchEndY = e.changedTouches[0].screenY;
             const distance = touchEndY - touchStartY;
+            
             if (distance > 50) { 
+                // Swiped Down -> Toggle Mode
                 toggleInputMode();
+            } else if (distance < -50) {
+                // Swiped Up -> Reset Game
+                initGame();
             }
         }, {passive: false});
 
@@ -489,7 +494,6 @@
         // Wait for layout to settle before init
         window.onload = initGame;
         window.onresize = () => {
-             // Optional: simple reload on rotate/resize to recalculate grid
              setTimeout(initGame, 100); 
         };
 
