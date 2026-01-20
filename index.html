@@ -25,10 +25,11 @@
             box-sizing: border-box;
             
             /* --- SAFE AREA LOGIC --- */
-            /* Pushes content down below the Dynamic Island / Notch */
-            padding-top: max(20px, env(safe-area-inset-top)); 
-            /* Pushes content up above the Home Swipe Bar */
-            padding-bottom: max(10px, env(safe-area-inset-bottom));
+            /* calculates safe area PLUS an extra 35px buffer to clear the island completely */
+            padding-top: calc(env(safe-area-inset-top) + 35px); 
+            
+            /* Bottom buffer for the swipe bar */
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
         }
 
         #game-window {
