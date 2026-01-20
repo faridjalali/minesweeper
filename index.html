@@ -10,11 +10,11 @@
             --shadow-light: #ffffff;
             --shadow-dark: #808080;
             --shadow-black: #000000;
-            --cell-size: 30px; /* Base size */
+            --cell-size: 32px; 
         }
 
         body {
-            background-color: #008080;
+            background-color: #000000;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
@@ -22,9 +22,12 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            touch-action: manipulation; /* Improves touch response */
+            touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
+            /* Prevents "Pull to Refresh" on mobile so swipe works for the game */
+            overscroll-behavior: none; 
+            overflow: hidden; 
         }
 
         /* 3D Bevel Utilities */
@@ -44,13 +47,12 @@
             background-color: var(--bg-color);
         }
 
-        /* Game Container */
         #game-window {
             padding: 6px;
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); 
         }
 
-        /* Header (Counter, Face, Timer) */
+        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -98,6 +100,7 @@
             border-left: 3px solid var(--shadow-dark);
             border-right: 3px solid var(--shadow-light);
             border-bottom: 3px solid var(--shadow-light);
+            margin: 0 auto;
         }
 
         .cell {
@@ -107,12 +110,11 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
             box-sizing: border-box;
         }
 
-        /* Unrevealed Cell */
         .cell.hidden {
             border-top: 3px solid var(--shadow-light);
             border-left: 3px solid var(--shadow-light);
@@ -120,7 +122,6 @@
             border-bottom: 3px solid var(--shadow-dark);
         }
 
-        /* Revealed Cell */
         .cell.revealed {
             border: 1px solid #7b7b7b;
             background-color: #c0c0c0;
@@ -136,38 +137,39 @@
         .c-7 { color: black; }
         .c-8 { color: gray; }
 
-        /* Mine and Flag styling */
         .mine { background-color: red; }
         .flag { color: red; }
 
         /* Mobile Controls */
         #mobile-controls {
-            margin-top: 20px;
+            margin-top: 25px;
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: center;
+            width: 100%;
+            max-width: 320px;
         }
 
         .control-btn {
-            padding: 10px 20px;
+            flex: 1;
+            padding: 12px 0;
             font-family: inherit;
             font-weight: bold;
             text-transform: uppercase;
             cursor: pointer;
+            text-align: center;
+            background-color: #c0c0c0;
+            font-size: 16px;
+            transition: transform 0.1s;
         }
 
         .mode-active {
-            background-color: #ffff00; /* Highlight active mode */
+            background-color: #ffff00;
             border-top: 2px solid var(--shadow-dark);
             border-left: 2px solid var(--shadow-dark);
             border-right: 2px solid var(--shadow-light);
             border-bottom: 2px solid var(--shadow-light);
-        }
-
-        /* Responsive tweaks */
-        @media (max-width: 500px) {
-            :root { --cell-size: 36px; } /* Larger touch targets */
-            body { align-items: flex-start; padding-top: 20px; }
+            transform: translateY(2px);
         }
     </style>
 </head>
@@ -175,7 +177,7 @@
 
     <div id="game-window" class="bevel-up">
         <header class="bevel-down">
-            <div id="mines-count" class="digital-display">010</div>
+            <div id="mines-count" class="digital-display">015</div>
             <div id="reset-btn" class="bevel-up">🙂</div>
             <div id="timer" class="digital-display">000</div>
         </header>
@@ -195,16 +197,18 @@
         const COLS = 10; 
         const MINES_COUNT = 15;
         
-        // State Variables
         let grid = [];
         let gameOver = false;
         let flags = 0;
         let seconds = 0;
         let timerInterval = null;
         let firstClick = true;
-        let inputMode = 'dig'; // 'dig' or 'flag' for mobile
+        let inputMode = 'dig';
+        
+        // Touch variables
+        let touchStartY = 0;
+        let touchEndY = 0;
 
-        // DOM Elements
         const gridEl = document.getElementById('grid');
         const minesDisplay = document.getElementById('mines-count');
         const timerDisplay = document.getElementById('timer');
@@ -212,7 +216,6 @@
         const btnDig = document.getElementById('mode-dig');
         const btnFlag = document.getElementById('mode-flag');
 
-        // Initialize Game
         function initGame() {
             gridEl.style.gridTemplateColumns = `repeat(${COLS}, var(--cell-size))`;
             gridEl.innerHTML = '';
@@ -227,7 +230,6 @@
             timerDisplay.textContent = '000';
             updateMineCount();
 
-            // Create Grid Logic
             for (let r = 0; r < ROWS; r++) {
                 const row = [];
                 for (let c = 0; c < COLS; c++) {
@@ -254,14 +256,11 @@
             }
         }
 
-        // Place Mines (guarantee first click is safe)
         function placeMines(safeR, safeC) {
             let minesPlaced = 0;
             while (minesPlaced < MINES_COUNT) {
                 const r = Math.floor(Math.random() * ROWS);
                 const c = Math.floor(Math.random() * COLS);
-
-                // Don't place mine on existing mine or on the first clicked cell
                 if (!grid[r][c].isMine && !(r === safeR && c === safeC)) {
                     grid[r][c].isMine = true;
                     minesPlaced++;
@@ -270,14 +269,11 @@
             calculateNeighbors();
         }
 
-        // Calculate numbers for cells
         function calculateNeighbors() {
             for (let r = 0; r < ROWS; r++) {
                 for (let c = 0; c < COLS; c++) {
                     if (grid[r][c].isMine) continue;
-                    
                     let count = 0;
-                    // Check all 8 neighbors
                     for (let i = -1; i <= 1; i++) {
                         for (let j = -1; j <= 1; j++) {
                             const nr = r + i;
@@ -292,19 +288,14 @@
             }
         }
 
-        // Handle Cell Click
         function handleClick(cell) {
             if (gameOver || cell.revealed) return;
-
-            // Handle Flag Mode (Mobile)
             if (inputMode === 'flag') {
                 toggleFlag(cell);
                 return;
             }
+            if (cell.flagged) return;
 
-            if (cell.flagged) return; // Cannot reveal flagged cells
-
-            // Initialize on first click
             if (firstClick) {
                 placeMines(cell.r, cell.c);
                 firstClick = false;
@@ -319,19 +310,15 @@
             }
         }
 
-        // Reveal Logic (Recursive flood fill)
         function reveal(cell) {
             if (cell.revealed || cell.flagged) return;
-
             cell.revealed = true;
             cell.element.classList.remove('hidden');
             cell.element.classList.add('revealed');
-
             if (cell.neighbors > 0) {
                 cell.element.textContent = cell.neighbors;
                 cell.element.classList.add(`c-${cell.neighbors}`);
             } else {
-                // Empty cell, flood fill neighbors
                 for (let i = -1; i <= 1; i++) {
                     for (let j = -1; j <= 1; j++) {
                         const nr = cell.r + i;
@@ -344,10 +331,8 @@
             }
         }
 
-        // Toggle Flag
         function toggleFlag(cell) {
             if (gameOver || cell.revealed) return;
-
             if (cell.flagged) {
                 cell.flagged = false;
                 cell.element.textContent = '';
@@ -362,13 +347,10 @@
             updateMineCount();
         }
 
-        // Game Over - Loss
         function explode(triggerCell) {
             gameOver = true;
             stopTimer();
             resetBtn.textContent = '😵';
-            
-            // Reveal all mines
             grid.forEach(row => {
                 row.forEach(cell => {
                     if (cell.isMine) {
@@ -378,11 +360,9 @@
                     }
                 });
             });
-            // Highlight the one that killed you
             triggerCell.element.style.backgroundColor = 'red';
         }
 
-        // Game Over - Win
         function checkWin() {
             let revealedCount = 0;
             grid.forEach(row => {
@@ -390,7 +370,6 @@
                     if (cell.revealed) revealedCount++;
                 });
             });
-
             if (revealedCount === (ROWS * COLS) - MINES_COUNT) {
                 gameOver = true;
                 stopTimer();
@@ -413,27 +392,55 @@
             updateMineCount();
         }
 
-        // UI Helpers
         function setMode(mode) {
             inputMode = mode;
             if (mode === 'dig') {
                 btnDig.classList.add('mode-active');
                 btnFlag.classList.remove('mode-active');
-                // visual effect
+                
                 btnDig.classList.remove('bevel-up');
                 btnDig.classList.add('bevel-down');
+                
                 btnFlag.classList.add('bevel-up');
                 btnFlag.classList.remove('bevel-down');
             } else {
                 btnFlag.classList.add('mode-active');
                 btnDig.classList.remove('mode-active');
-                // visual effect
+                
                 btnFlag.classList.remove('bevel-up');
                 btnFlag.classList.add('bevel-down');
+                
                 btnDig.classList.add('bevel-up');
                 btnDig.classList.remove('bevel-down');
             }
         }
+
+        // --- Swipe Gesture Logic ---
+        document.addEventListener('touchstart', e => {
+            touchStartY = e.changedTouches[0].screenY;
+        }, {passive: false});
+
+        document.addEventListener('touchend', e => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleGesture();
+        }, {passive: false});
+
+        function handleGesture() {
+            const distance = touchEndY - touchStartY;
+            // Threshold of 50px for a valid swipe
+            if (distance > 50) { 
+                toggleInputMode();
+            }
+        }
+
+        function toggleInputMode() {
+            if (inputMode === 'dig') {
+                setMode('flag');
+            } else {
+                setMode('dig');
+            }
+        }
+        // ---------------------------
 
         function updateMineCount() {
             let count = MINES_COUNT - flags;
@@ -453,10 +460,7 @@
         }
 
         resetBtn.addEventListener('click', initGame);
-
-        // Start
         initGame();
-
     </script>
 </body>
 </html>
