@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Retro Minesweeper</title>
+    <title>Minesweeper</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Minesweeper">
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💣</text></svg>">
-
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAgZQTFRFAAAAAAAAgICAAICAAAAAgIAAAACAgICAAICAAMDAwMDA/wAAAP//AP8AAAD/AP//P9D/wAAAAF90Uk5TAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADg5yVIAAAJQSURBVHic7ZfZbsIwEEYN4BALxvC2//+XTQsF2sS4ErL4ZN9Q5uKxpHm49rC1Nuzs7Ozs7Ozs7Ozs7P5f0A2j0K8XjLw6l08CD8cTfa8WzDxfa+1awczzD2tsaAWz8FtrX1rBzPOl1r63gpnne619bwUzz49a+9EKZp6ftfZT2tW+t0J9O/1d620omHl+19qfVjDz/Km1v61g5vlfaz9bwczzo9Z+tIKZ52et/WwFM8+vWvvVCmaef7X2qxXMPL9r7W8rmHn+1NrfVjDz/K+1n61g5vlRa/9Y4U/74wr17/Rvrf1qBTPPr1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsV/gB5E52B4s1pYQAAAABJRU5ErkJggg==">
+    
     <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAgZQTFRFAAAAAAAAgICAAICAAAAAgIAAAACAgICAAICAAMDAwMDA/wAAAP//AP8AAAD/AP//P9D/wAAAAF90Uk5TAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADg5yVIAAAJQSURBVHic7ZfZbsIwEEYN4BALxvC2//+XTQsF2sS4ErL4ZN9Q5uKxpHm49rC1Nuzs7Ozs7Ozs7Ozs7P5f0A2j0K8XjLw6l08CD8cTfa8WzDxfa+1awczzD2tsaAWz8FtrX1rBzPOl1r63gpnne619bwUzz49a+9EKZp6ftfZT2tW+t0J9O/1d620omHl+19qfVjDz/Km1v61g5vlfaz9bwczzo9Z+tIKZ52et/WwFM8+vWvvVCmaef7X2qxXMPL9r7W8rmHn+1NrfVjDz/K+1n61g5vlRa/9Y4U/74wr17/Rvrf1qBTPPr1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsVzDy/a+1vK5h5/tTa31Yw8/yvtZ+tYOb5UWv/WMHM87PWfraCmedXrf1qBTPPv1r71Qpmnn+19qsV/gB5E52B4s1pYQAAAABJRU5ErkJggg==">
 
     <style>
@@ -25,40 +25,45 @@
             background-color: #000000;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
-            justify-content: center;
-            height: 100vh;
+            align-items: center; /* Vertically center the game */
+            justify-content: center; /* Horizontally center */
+            min-height: 100vh;
             margin: 0;
             overflow: hidden;
             touch-action: none;
             overscroll-behavior: none;
-            box-sizing: border-box;
             
-            /* --- SAFE AREA LOGIC --- */
-            /* Pushes top down past the dynamic island + 35px extra buffer */
-            padding-top: calc(env(safe-area-inset-top) + 35px); 
-            /* Bottom buffer for the home swipe bar */
+            /* Safe area padding creates the outer black frame, not internal gray gaps */
+            padding-top: max(35px, env(safe-area-inset-top)); 
             padding-bottom: max(20px, env(safe-area-inset-bottom));
+            box-sizing: border-box;
         }
 
         #game-window {
             width: 100%;
-            max-width: 430px; /* iPhone Max width cap */
-            height: 100%;
+            max-width: 430px; /* Limits width for standard phone feel */
+            /* Height is AUTO now - it shrink wraps the content */
+            height: auto; 
             background-color: var(--bg-color);
             display: flex;
             flex-direction: column;
-            border-left: 2px solid var(--shadow-light);
-            border-right: 2px solid var(--shadow-dark);
+            border-left: 3px solid var(--shadow-light);
+            border-right: 3px solid var(--shadow-dark);
+            border-top: 3px solid var(--shadow-light);
+            border-bottom: 3px solid var(--shadow-dark);
             box-sizing: border-box;
-            padding: 4px;
+            padding: 6px;
+            
+            /* Add a shadow to make it pop against the black background */
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); 
         }
 
-        /* 3D Effects */
+        /* 3D Bevel Utilities */
         .bevel-up {
-            border-top: 2px solid var(--shadow-light);
-            border-left: 2px solid var(--shadow-light);
-            border-right: 2px solid var(--shadow-dark);
-            border-bottom: 2px solid var(--shadow-dark);
+            border-top: 3px solid var(--shadow-light);
+            border-left: 3px solid var(--shadow-light);
+            border-right: 3px solid var(--shadow-dark);
+            border-bottom: 3px solid var(--shadow-dark);
             background-color: var(--bg-color);
         }
 
@@ -75,20 +80,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 4px;
+            padding: 8px 6px;
             margin-bottom: 6px;
             background-color: var(--bg-color);
-            flex-shrink: 0;
         }
 
-        /* Digital Counters */
         .digital-display {
             background: black;
             color: red;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
-            padding: 2px;
-            width: 40px;
+            padding: 2px 4px;
+            width: 50px;
             text-align: center;
             border-top: 2px solid var(--shadow-dark);
             border-left: 2px solid var(--shadow-dark);
@@ -96,31 +99,30 @@
             border-bottom: 2px solid var(--shadow-light);
         }
 
-        /* Center Control Cluster */
         .controls-cluster {
             display: flex;
-            gap: 4px;
+            gap: 8px;
         }
 
         .btn {
-            width: 36px;
-            height: 36px;
-            font-size: 20px;
+            width: 42px;
+            height: 42px;
+            font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             user-select: none;
         }
-
+        
         .btn:active {
             border-top: 2px solid var(--shadow-dark);
             border-left: 2px solid var(--shadow-dark);
             border-right: 2px solid var(--shadow-light);
             border-bottom: 2px solid var(--shadow-light);
+            transform: translate(1px, 1px);
         }
 
-        /* Active Mode Highlight */
         .mode-active {
             background-color: #ffff00;
             border-top: 2px solid var(--shadow-dark);
@@ -129,23 +131,19 @@
             border-bottom: 2px solid var(--shadow-light);
         }
 
-        /* GRID Container */
+        /* GRID */
         #grid-container {
-            flex-grow: 1; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            background-color: #808080;
+            /* No flex-grow. The height is determined by the grid content. */
+            display: block; 
             border-top: 3px solid var(--shadow-dark);
             border-left: 3px solid var(--shadow-dark);
             border-right: 3px solid var(--shadow-light);
             border-bottom: 3px solid var(--shadow-light);
-            overflow: hidden;
         }
 
         #grid {
             display: grid;
+            /* No margins or gaps here, cells touch perfectly */
         }
 
         .cell {
@@ -155,7 +153,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
             box-sizing: border-box;
         }
@@ -165,7 +163,6 @@
             border-left: 3px solid var(--shadow-light);
             border-right: 3px solid var(--shadow-dark);
             border-bottom: 3px solid var(--shadow-dark);
-            background-color: var(--bg-color);
         }
 
         .cell.revealed {
@@ -173,7 +170,7 @@
             background-color: #c0c0c0;
         }
 
-        /* Colors & Icons */
+        /* Text Colors */
         .c-1 { color: blue; }
         .c-2 { color: green; }
         .c-3 { color: red; }
@@ -211,7 +208,6 @@
     <script>
         // DOM Elements
         const gridEl = document.getElementById('grid');
-        const gridContainer = document.getElementById('grid-container');
         const minesDisplay = document.getElementById('mines-count');
         const timerDisplay = document.getElementById('timer');
         const resetBtn = document.getElementById('reset-btn');
@@ -219,7 +215,7 @@
         const btnFlag = document.getElementById('btn-flag');
         const gameWindow = document.getElementById('game-window');
 
-        // State Variables
+        // State
         let grid = [];
         let gameOver = false;
         let flags = 0;
@@ -232,25 +228,38 @@
         let COLS = 10;
         let MINES = 0;
 
-        // Touch handling
         let touchStartY = 0;
         let touchEndY = 0;
 
         function calculateDimensions() {
-            // Get available dimensions inside the grid container
-            const width = gridContainer.clientWidth;
-            const height = gridContainer.clientHeight;
+            // 1. Calculate usable width
+            // We measure the gameWindow's current width (minus padding/border) to fit columns
+            // But gameWindow isn't fully rendered yet. We use window.innerWidth limited by max-width.
+            const maxW = Math.min(window.innerWidth, 430);
+            
+            // Adjust for game window padding (6px * 2) and border (3px * 2) = 18px approx
+            // We'll just take the inner width of the window as a rough guide, but better:
+            // Let's assume full screen width minus a small buffer for the bevels.
+            const usableWidth = maxW - 18; 
             
             COLS = 10;
-            
-            // Calculate Cell Size
-            const cellSize = Math.floor(width / COLS);
+            const cellSize = Math.floor(usableWidth / COLS);
             document.documentElement.style.setProperty('--cell-size', `${cellSize}px`);
 
-            // Calculate ROWS based on remaining height
-            ROWS = Math.floor(height / cellSize);
-
-            // Mine Density (approx 15%)
+            // 2. Calculate usable height for ROWS
+            // Total Height Available - Header Height (~70px) - Safe Area Padding (~55px + 20px)
+            // We want to calculate how many rows fit without scrolling.
+            
+            const headerHeight = 75; // Approx height of header + margins
+            const safeAreaTop = 40;  // Estimate or use actual if detectable (hard in pure JS on load)
+            const safeAreaBottom = 30;
+            
+            const availableHeight = window.innerHeight - headerHeight - safeAreaTop - safeAreaBottom;
+            
+            ROWS = Math.floor(availableHeight / cellSize);
+            // Limit ROWS to prevent layout breaking if detection fails
+            if (ROWS < 10) ROWS = 10; 
+            
             MINES = Math.floor(ROWS * COLS * 0.15);
         }
 
@@ -270,7 +279,7 @@
             timerDisplay.textContent = '000';
             updateMineCount();
 
-            // Generate Cells
+            // Create Cells
             for (let r = 0; r < ROWS; r++) {
                 const row = [];
                 for (let c = 0; c < COLS; c++) {
@@ -296,6 +305,8 @@
                 grid.push(row);
             }
         }
+
+        // --- Core Game Logic ---
 
         function placeMines(safeR, safeC) {
             let minesPlaced = 0;
@@ -434,6 +445,8 @@
             updateMineCount();
         }
 
+        // --- Controls & Timer ---
+
         function setMode(mode) {
             inputMode = mode;
             if (mode === 'dig') {
@@ -474,7 +487,7 @@
             clearInterval(timerInterval);
         }
 
-        // --- Swipe Logic ---
+        // --- Touch Gestures ---
         document.addEventListener('touchstart', e => {
             touchStartY = e.changedTouches[0].screenY;
         }, {passive: false});
@@ -483,11 +496,12 @@
             touchEndY = e.changedTouches[0].screenY;
             const distance = touchEndY - touchStartY;
             
+            // Short swipe threshold
             if (distance > 50) { 
-                // Swiped Down -> Toggle Mode
                 toggleInputMode();
             } else if (distance < -50) {
-                // Swiped Up -> Reset Game
+                // Check if user is near top of screen before resetting? 
+                // No, simple swipe up anywhere resets for speed.
                 initGame();
             }
         }, {passive: false});
@@ -496,15 +510,12 @@
             setMode(inputMode === 'dig' ? 'flag' : 'dig');
         }
 
-        // Initializer
         resetBtn.addEventListener('click', initGame);
         
-        // Wait for layout to settle before init
+        // Init
         window.onload = initGame;
-        window.onresize = () => {
-             setTimeout(initGame, 100); 
-        };
-
+        window.onresize = () => { setTimeout(initGame, 200); };
+        
     </script>
 </body>
 </html>
