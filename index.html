@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Retro Minesweeper</title>
     <style>
         :root {
@@ -16,12 +16,19 @@
             background-color: #000000;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
-            justify-content: center; /* Center on large screens */
+            justify-content: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden; /* Prevent scrolling */
-            touch-action: none; /* Disable native touch gestures */
+            overflow: hidden;
+            touch-action: none;
             overscroll-behavior: none;
+            box-sizing: border-box;
+            
+            /* --- SAFE AREA LOGIC --- */
+            /* Pushes content down below the Dynamic Island / Notch */
+            padding-top: max(20px, env(safe-area-inset-top)); 
+            /* Pushes content up above the Home Swipe Bar */
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
         }
 
         #game-window {
@@ -62,7 +69,7 @@
             padding: 6px 4px;
             margin-bottom: 6px;
             background-color: var(--bg-color);
-            flex-shrink: 0; /* Prevent header from shrinking */
+            flex-shrink: 0;
         }
 
         /* Digital Counters */
@@ -115,12 +122,12 @@
 
         /* GRID Container */
         #grid-container {
-            flex-grow: 1; /* Fills remaining space */
+            flex-grow: 1; 
             display: flex;
-            align-items: center; /* Vertically center grid if slight gap */
+            align-items: center;
             justify-content: center;
             position: relative;
-            background-color: #808080; /* Darker bg behind grid */
+            background-color: #808080;
             border-top: 3px solid var(--shadow-dark);
             border-left: 3px solid var(--shadow-dark);
             border-right: 3px solid var(--shadow-light);
@@ -139,7 +146,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px; /* Dynamic font size could be added, but 18 is safe */
+            font-size: 18px;
             cursor: pointer;
             box-sizing: border-box;
         }
@@ -213,32 +220,28 @@
         let inputMode = 'dig';
         
         let ROWS = 0;
-        let COLS = 10; // Standard mobile width
+        let COLS = 10;
         let MINES = 0;
 
         // Touch handling
         let touchStartY = 0;
         let touchEndY = 0;
 
-        // --- Logic ---
-
         function calculateDimensions() {
             // Get available dimensions inside the grid container
-            // We defer this slightly to ensure layout is computed
             const width = gridContainer.clientWidth;
             const height = gridContainer.clientHeight;
             
-            // We fix COLS to 10 for a standard mobile experience
             COLS = 10;
             
-            // Calculate Cell Size to perfectly fill width
+            // Calculate Cell Size
             const cellSize = Math.floor(width / COLS);
             document.documentElement.style.setProperty('--cell-size', `${cellSize}px`);
 
-            // Calculate how many ROWs fit in the height
+            // Calculate ROWS based on remaining height
             ROWS = Math.floor(height / cellSize);
 
-            // Set Mine Density (approx 15%)
+            // Mine Density (approx 15%)
             MINES = Math.floor(ROWS * COLS * 0.15);
         }
 
@@ -486,7 +489,7 @@
         window.onload = initGame;
         window.onresize = () => {
              // Optional: simple reload on rotate/resize to recalculate grid
-             // setTimeout(initGame, 200); 
+             setTimeout(initGame, 100); 
         };
 
     </script>
